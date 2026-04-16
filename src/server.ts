@@ -30,12 +30,75 @@ setupSwagger(app)
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.get('/', (req, res) => {
-   res.json({
-      success: true,
-      message: 'PinShare API is running',
-      version: '1.0.0',
-      docs: `/api-docs`,
-   })
+   res.send(`
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <title>PinShare API</title>
+      <style>
+         body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-family: Arial, sans-serif;
+         }
+
+         .container {
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+         }
+
+         h1 {
+            margin-bottom: 10px;
+         }
+
+         p {
+            opacity: 0.9;
+         }
+
+         .spinner {
+            margin: 20px auto;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+         }
+
+         @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+         }
+
+         @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container">
+         <h1>Chào anh Mentor</h1>
+         <h1>CHO EM XIN 10 ĐIỂM NHA hihi</h1>
+         <p>PinShare API is running...</p>
+         <div class="spinner"></div>
+         <p>Redirecting to API Docs</p>
+      </div>
+
+      <script>
+         setTimeout(() => {
+            window.location.href = '/api-docs'
+         }, 2000)
+      </script>
+   </body>
+   </html>
+   `)
 })
 
 app.use('/api/auth', authRouter)
