@@ -2,6 +2,7 @@ import { prisma } from '../common/prisma/connect.prisma.js'
 import { NotfoundException, ForbiddenException, BadRequestException } from '../common/helpers/exception.helper.js'
 import { uploadToCloudinary, deleteFromCloudinary } from '../common/helpers/cloudinary.helper.js'
 import type { CreateImageDto, DeleteImageDto } from '../dtos/image.dto.js'
+import { getPaginationOptions, getPaginationResult } from '../common/helpers/pagination.helper.js'
 
 export interface ImageFilterDto {
    page?: number
@@ -14,9 +15,7 @@ export const imageService = {
     * Trả về danh sách ảnh, có hỗ trợ tìm kiếm động theo 'name'
     */
    async findAll(dto: ImageFilterDto) {
-      const page = dto.page || 1
-      const limit = dto.limit || 10
-      const skip = (page - 1) * limit
+      const { page, limit, skip } = getPaginationOptions(dto.page, dto.limit)
 
       // Build điều kiện where động (dynamic where clause)
       const where: any = {}
@@ -44,15 +43,7 @@ export const imageService = {
          }),
       ])
 
-      return {
-         images,
-         pagination: {
-            page,
-            limit,
-            total_items: totalCount,
-            total_pages: Math.ceil(totalCount / limit),
-         },
-      }
+      return getPaginationResult(images, totalCount, page, limit)
    },
 
    /**
@@ -133,7 +124,7 @@ export const imageService = {
          const folderName = urlParts[urlParts.length - 2]
          const filename = filenameWithExt.split('.')[0]
          const publicId = `${folderName}/${filename}`
-         
+
          await deleteFromCloudinary(publicId)
       } catch (err) {
          console.warn('Lỗi khi xóa ảnh trên Cloudinary:', err)
