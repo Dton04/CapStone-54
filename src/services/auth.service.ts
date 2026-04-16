@@ -2,7 +2,7 @@ import { prisma } from '../common/prisma/connect.prisma.js'
 import { hashPassword, comparePassword } from '../common/helpers/password.helper.js'
 import { generateTokens, verifyRefreshToken } from '../common/helpers/jwt.helper.js'
 import type { RegisterDto, LoginDto, AuthResult } from '../dtos/auth.dto.js'
-import { NotfoundException, UnauthorizedException } from '../common/helpers/exception.helper.js'
+import { BadRequestException, NotfoundException, UnauthorizedException } from '../common/helpers/exception.helper.js'
 
 
 
@@ -48,7 +48,7 @@ export async function loginService(dto: LoginDto): Promise<AuthResult> {
    if (!user) throw new NotfoundException("Không tìm thấy user")
 
    const isValid = await comparePassword(password, user.password)
-   if (!isValid) throw new UnauthorizedException("Sai mật khẩu")
+   if (!isValid) throw new BadRequestException("Sai mật khẩu")
 
    const { accessToken, refreshToken } = generateTokens({
       id: user.id,

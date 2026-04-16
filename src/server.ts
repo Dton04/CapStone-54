@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import { setupSwagger } from './common/swagger/config.swagger.js'
 
 // ─── Routers ──────────────────────────────────────────────────────────────────
@@ -12,9 +13,11 @@ const PORT = process.env.PORT || 9090
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
 app.use(
    cors({
-      origin: process.env.CLIENT_URL || '*',
+      origin: process.env.CLIENT_URL || 'http://localhost:5173', // Update this based on frontend URL
+      credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       allowedHeaders: ['Content-Type', 'Authorization'],
    }),
@@ -27,7 +30,7 @@ setupSwagger(app)
 app.get('/', (req, res) => {
    res.json({
       success: true,
-      message: '🚀 PinShare API is running',
+      message: 'PinShare API is running',
       version: '1.0.0',
       docs: `/api-docs`,
    })
@@ -42,6 +45,6 @@ app.use((req, res) => {
 
 // ─── Start server ─────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
-   console.log(`✅ Server running at http://localhost:${PORT}`)
-   console.log(`📚 Swagger docs at http://localhost:${PORT}/api-docs`)
+   console.log(`Server running at http://localhost:${PORT}`)
+   console.log(`Swagger docs at http://localhost:${PORT}/api-docs`)
 })

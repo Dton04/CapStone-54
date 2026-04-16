@@ -15,15 +15,15 @@
  *       properties:
  *         full_name:
  *           type: string
- *           example: Alice Johnson
+ *           example: TanDatDZ
  *         email:
  *           type: string
  *           format: email
- *           example: alice@pinshare.com
+ *           example: dat@gmail.com
  *         password:
  *           type: string
  *           format: password
- *           example: Password123!
+ *           example: Password123@
  *         age:
  *           type: integer
  *           example: 25
@@ -35,11 +35,11 @@
  *         email:
  *           type: string
  *           format: email
- *           example: alice@pinshare.com
+ *           example: dat@gmail.com
  *         password:
  *           type: string
  *           format: password
- *           example: Password123!
+ *           example: Password123@
  *
  *     RefreshTokenBody:
  *       type: object
@@ -53,8 +53,8 @@
  *       type: object
  *       properties:
  *         id:           { type: integer, example: 1 }
- *         full_name:    { type: string, example: Alice Johnson }
- *         email:        { type: string, example: alice@pinshare.com }
+ *         full_name:    { type: string, example: TanDatDZ }
+ *         email:        { type: string, example: dat@gmail.com }
  *         avatar:       { type: string, nullable: true, example: null }
  *         age:          { type: integer, nullable: true, example: 25 }
  *         created_at:   { type: string, format: date-time }
@@ -188,4 +188,4 @@
  */
 
 // File này chỉ chứa Swagger JSDoc comments – không export code
-export {}
+export { }

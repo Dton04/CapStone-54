@@ -3,14 +3,19 @@ import { verifyAccessToken } from '../common/helpers/jwt.helper.js'
 import { errorResponse } from '../common/helpers/response.helper.js'
 
 export function verifyToken(req: Request, res: Response, next: NextFunction): void {
-   const authHeader = req.headers['authorization']
+   let token = req.cookies?.access_token
 
-   if (!authHeader || !authHeader.startsWith('Bearer ')) {
+   if (!token) {
+      const authHeader = req.headers['authorization']
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+         token = authHeader.split(' ')[1]
+      }
+   }
+
+   if (!token) {
       errorResponse(res, 'Access token required', 401)
       return
    }
-
-   const token = authHeader.split(' ')[1]
 
    try {
       req.user = verifyAccessToken(token)
