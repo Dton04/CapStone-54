@@ -57,7 +57,7 @@
  *         email:        { type: string, example: dat@gmail.com }
  *         avatar:       { type: string, nullable: true, example: null }
  *         age:          { type: integer, nullable: true, example: 25 }
- *         created_at:   { type: string, format: date-time }
+ *         createdAt:    { type: string, format: date-time }
  *
  *     AuthResponse:
  *       type: object

@@ -15,7 +15,7 @@
  *         id:          { type: integer, example: 1 }
  *         image_name:  { type: string, example: "Hoàng hôn trên biển" }
  *         url:         { type: string, example: "https://example.com/sunset.jpg" }
- *         created_at:  { type: string, format: date-time }
+ *         createdAt:   { type: string, format: date-time }
  *         user:
  *           type: object
  *           properties:

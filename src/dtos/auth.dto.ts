@@ -37,7 +37,7 @@ export interface AuthResult {
       email: string
       avatar: string | null
       age: number | null
-      created_at: Date
+      createdAt: Date
    }
    accessToken: string
    refreshToken: string

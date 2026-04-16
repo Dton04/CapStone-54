@@ -8,14 +8,20 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   full_name     String
-  email         String   @unique
+  email         String  @unique
   password      String
   avatar        String?
   age           Int?
   refresh_token String?
-  created_at    DateTime @default(now())
+
+  // Audit Fields
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  deletedBy Int       @default(0) @map("deleted_by")
+  deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
 
   images      Image[]
   comments    Comment[]
@@ -25,12 +31,18 @@ model User {
 }
 
 model Image {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   image_name  String
   url         String
   description String?
   user_id     Int
-  created_at  DateTime @default(now())
+
+  // Audit Fields
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  deletedBy Int       @default(0) @map("deleted_by")
+  deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
 
   user     User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   comments Comment[]
@@ -40,11 +52,17 @@ model Image {
 }
 
 model Comment {
-  id         Int      @id @default(autoincrement())
-  content    String
-  user_id    Int
-  image_id   Int
-  created_at DateTime @default(now())
+  id       Int    @id @default(autoincrement())
+  content  String
+  user_id  Int
+  image_id Int
+
+  // Audit Fields
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  deletedBy Int       @default(0) @map("deleted_by")
+  deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
 
   user  User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
   image Image @relation(fields: [image_id], references: [id], onDelete: Cascade)
@@ -53,14 +71,20 @@ model Comment {
 }
 
 model SavedImage {
-  id       Int      @id @default(autoincrement())
+  id       Int @id @default(autoincrement())
   user_id  Int
   image_id Int
-  saved_at DateTime @default(now())
+
+  // Audit Fields
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  deletedBy Int       @default(0) @map("deleted_by")
+  deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
 
   user  User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
   image Image @relation(fields: [image_id], references: [id], onDelete: Cascade)
 
-  @@unique([user_id, image_id]) // một user chỉ lưu 1 ảnh 1 lần
+  @@unique([user_id, image_id])
   @@map("saved_images")
 }

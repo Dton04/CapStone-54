@@ -30,12 +30,12 @@ export const imageService = {
             where,
             skip,
             take: limit,
-            orderBy: { created_at: 'desc' },
+            orderBy: { createdAt: 'desc' },
             select: {
                id: true,
                image_name: true,
                url: true,
-               created_at: true,
+               createdAt: true,
                user: {
                   select: { id: true, full_name: true, avatar: true },
                },
@@ -57,7 +57,7 @@ export const imageService = {
             image_name: true,
             url: true,
             description: true,
-            created_at: true,
+            createdAt: true,
             user: {
                select: { id: true, full_name: true, email: true, avatar: true },
             },

@@ -22,7 +22,7 @@ export async function registerService(dto: RegisterDto): Promise<AuthResult> {
          email: true,
          avatar: true,
          age: true,
-         created_at: true
+         createdAt: true
       },
    })
 

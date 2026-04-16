@@ -3,13 +3,11 @@ import { imageService } from '../services/image.service.js'
 import { responseSuccess, responseError } from '../common/helpers/response.helper.js'
 
 export const imageController = {
-   /**
-    * GET /api/images (Hỗ trợ query: ?page=1&limit=10&name=hanoi)
-    */
+
    async findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
       try {
          const { page, limit, name } = req.query
-         
+
          // Biến đổi req.query sang DTO trước khi đẩy vào Service
          const dto = {
             page: page ? Number(page) : undefined,
@@ -27,9 +25,6 @@ export const imageController = {
       }
    },
 
-   /**
-    * GET /api/images/:id
-    */
    async getImageById(req: Request, res: Response, next: NextFunction): Promise<void> {
       try {
          const { id } = req.params
@@ -50,9 +45,6 @@ export const imageController = {
       }
    },
 
-   /**
-    * POST /api/images (Upload ảnh)
-    */
    async create(req: Request, res: Response, next: NextFunction): Promise<void> {
       try {
          const { image_name, description } = req.body
@@ -79,9 +71,6 @@ export const imageController = {
       }
    },
 
-   /**
-    * DELETE /api/images/:id
-    */
    async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
       try {
          const { id } = req.params
