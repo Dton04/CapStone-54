@@ -3,3 +3,4 @@ node_modules
 /src/common/prisma/generated
 implementation.md
 planpo.md
+dist
