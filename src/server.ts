@@ -85,7 +85,7 @@ app.get('/', (req, res) => {
    <body>
       <div class="container">
          <h1>Chào anh Mentor</h1>
-         <h1>CHO EM XIN 10 ĐIỂM NHA hihi</h1>
+         <h1>CHO EM XIN 100 ĐIỂM NHA hihi</h1>
          <p>PinShare API is running...</p>
          <div class="spinner"></div>
          <p>Redirecting to API Docs</p>
@@ -94,7 +94,7 @@ app.get('/', (req, res) => {
       <script>
          setTimeout(() => {
             window.location.href = '/api-docs'
-         }, 2000)
+         }, 3000)
       </script>
    </body>
    </html>
