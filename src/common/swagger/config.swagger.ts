@@ -57,13 +57,8 @@ const swaggerDefinition: swaggerJSDoc.OAS3Definition = {
 const swaggerOptions: swaggerJSDoc.Options = {
    definition: swaggerDefinition,
    apis: [
-      // Quét file TS khi chạy dev (npm run dev)
-      './src/common/swagger/*.swagger.ts',
-      './src/routes/*.ts',
-
-      // Quét file JS khi chạy trên Railway (sau khi build xong nằm trong dist)
-      './dist/common/swagger/*.swagger.js',
-      './dist/routes/*.js'
+      './src/common/swagger/*.ts',
+      './src/routes/*.ts'
    ],
 }
 
