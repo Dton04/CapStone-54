@@ -7,6 +7,7 @@ import { setupSwagger } from './common/swagger/config.swagger.js'
 // ─── Routers ──────────────────────────────────────────────────────────────────
 import authRouter from './routes/auth.router.js'
 import imageRouter from './routes/image.router.js'
+import userRouter from './routes/user.router.js'
 
 const app = express()
 const PORT = process.env.PORT || 9090
@@ -17,7 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(
    cors({
-      origin: process.env.CLIENT_URL || 'http://localhost:5173', // Update this based on frontend URL
+      origin: process.env.CLIENT_URL || 'http://localhost:5173',
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       allowedHeaders: ['Content-Type', 'Authorization'],
@@ -39,6 +40,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRouter)
 app.use('/api/images', imageRouter)
+app.use('/api/users', userRouter)
 // ─── 404 handler ──────────────────────────────────────────────────────────────
 app.use((req, res) => {
    res.status(404).json({ success: false, message: `Route ${req.method} ${req.path} not found` })
