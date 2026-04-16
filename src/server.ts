@@ -6,6 +6,7 @@ import { setupSwagger } from './common/swagger/config.swagger.js'
 
 // ─── Routers ──────────────────────────────────────────────────────────────────
 import authRouter from './routes/auth.router.js'
+import imageRouter from './routes/image.router.js'
 
 const app = express()
 const PORT = process.env.PORT || 9090
@@ -37,6 +38,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/auth', authRouter)
+app.use('/api/images', imageRouter)
 
 // ─── 404 handler ──────────────────────────────────────────────────────────────
 app.use((req, res) => {

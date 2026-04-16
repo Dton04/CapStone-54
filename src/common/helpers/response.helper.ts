@@ -1,35 +1,27 @@
-import { Response } from 'express'
 
-// ─── Success ─────────────────────────────────────────────────────────────────
+// FE đã sử dụng format rồi thì
+// Không nên thay đổi key
+// Không nên xoá key
+// Chỉ nên thêm key
 
-export function successResponse<T>(
-   res: Response,
-   data: T,
-   message = 'Success',
-   statusCode = 200,
-): void {
-   res.status(statusCode).json({
-      success: true,
-      message,
-      data,
-   })
-}
+import { statusCodes } from "./status-code.helper.js";
 
-// ─── Error ────────────────────────────────────────────────────────────────────
+export const responseSuccess = <T>(data: T, message = "OK", statusCode = statusCodes.OK) => {
+   return {
+      status: "success",
+      statusCode: statusCode,
+      message: message,
+      data: data,
+      doc: "swagger.com",
+   };
+};
 
-export function errorResponse(
-   res: Response,
-   message = 'Internal server error',
-   statusCode = 500,
-): void {
-   res.status(statusCode).json({
-      success: false,
-      message,
-   })
-}
-
-// ─── Validation error ────────────────────────────────────────────────────────
-
-export function validationError(res: Response, message: string): void {
-   errorResponse(res, message, 400)
+export const responseError = (message = "Internal Server Error", statusCode = statusCodes.INTERNAL_SERVER_ERROR, stack?: string) => {
+   return {
+      status: "error",
+      statusCode: statusCode,
+      message: message,
+      stack: stack, // chỉ nên show khi ở môi trường deverloper, còn khi lên prodtion thì tắt
+      doc: "swagger.com",
+   }
 }

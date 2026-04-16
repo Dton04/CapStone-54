@@ -6,9 +6,8 @@ import {
    logoutService,
 } from '../services/auth.service.js'
 import {
-   successResponse,
-   errorResponse,
-   validationError,
+   responseSuccess,
+   responseError,
 } from '../common/helpers/response.helper.js'
 import type { RegisterDto, LoginDto, RefreshTokenDto } from '../dtos/auth.dto.js'
 import { setAuthCookies, clearAuthCookies } from '../common/helpers/cookie.helper.js'
@@ -19,7 +18,8 @@ export async function register(req: Request, res: Response): Promise<void> {
       const { full_name, email, password, age }: RegisterDto = req.body
 
       if (!full_name || !email || !password) {
-         validationError(res, 'full_name, email and password are required')
+         const resp = responseError('full_name, email and password are required', 400)
+         res.status(resp.statusCode).json(resp)
          return
       }
 
@@ -28,19 +28,15 @@ export async function register(req: Request, res: Response): Promise<void> {
       // Set cookies
       setAuthCookies(res, result.accessToken, result.refreshToken)
 
-      successResponse(
-         res,
-         {
-            user: result.user,
-         },
-         'User registered successfully',
-         201,
-      )
+      const resp = responseSuccess({ user: result.user }, 'User registered successfully', 201)
+      res.status(resp.statusCode).json(resp)
    } catch (error: any) {
       if (error.message === 'EMAIL_ALREADY_EXISTS') {
-         errorResponse(res, 'Email already exists', 409)
+         const resp = responseError('Email already exists', 409)
+         res.status(resp.statusCode).json(resp)
       } else {
-         errorResponse(res, 'Internal server error', 500)
+         const resp = responseError('Internal server error', 500)
+         res.status(resp.statusCode).json(resp)
       }
    }
 }
@@ -51,7 +47,8 @@ export async function login(req: Request, res: Response): Promise<void> {
       const { email, password }: LoginDto = req.body
 
       if (!email || !password) {
-         validationError(res, 'Email and password are required')
+         const resp = responseError('Email and password are required', 400)
+         res.status(resp.statusCode).json(resp)
          return
       }
 
@@ -60,14 +57,15 @@ export async function login(req: Request, res: Response): Promise<void> {
       // Set cookies
       setAuthCookies(res, result.accessToken, result.refreshToken)
 
-      successResponse(res, {
-         user: result.user,
-      }, 'Login successful')
+      const resp = responseSuccess({ user: result.user }, 'Login successful')
+      res.status(resp.statusCode).json(resp)
    } catch (error: any) {
       if (error.message === 'INVALID_CREDENTIALS') {
-         errorResponse(res, 'Invalid email or password', 401)
+         const resp = responseError('Invalid email or password', 401)
+         res.status(resp.statusCode).json(resp)
       } else {
-         errorResponse(res, 'Internal server error', 500)
+         const resp = responseError('Internal server error', 500)
+         res.status(resp.statusCode).json(resp)
       }
    }
 }
@@ -77,7 +75,8 @@ export async function refresh(req: Request, res: Response): Promise<void> {
       const refresh_token = req.cookies?.refresh_token || (req.body as RefreshTokenDto).refresh_token
 
       if (!refresh_token) {
-         validationError(res, 'refresh_token is required')
+         const resp = responseError('refresh_token is required', 400)
+         res.status(resp.statusCode).json(resp)
          return
       }
 
@@ -91,9 +90,11 @@ export async function refresh(req: Request, res: Response): Promise<void> {
          maxAge: 15 * 60 * 1000,
       })
 
-      successResponse(res, null, 'Token refreshed')
+      const resp = responseSuccess(null, 'Token refreshed')
+      res.status(resp.statusCode).json(resp)
    } catch {
-      errorResponse(res, 'Invalid or expired refresh token', 401)
+      const resp = responseError('Invalid or expired refresh token', 401)
+      res.status(resp.statusCode).json(resp)
    }
 }
 
@@ -104,8 +105,10 @@ export async function logout(req: Request, res: Response): Promise<void> {
 
       clearAuthCookies(res)
 
-      successResponse(res, null, 'Logged out successfully')
+      const resp = responseSuccess(null, 'Logged out successfully')
+      res.status(resp.statusCode).json(resp)
    } catch {
-      errorResponse(res, 'Internal server error', 500)
+      const resp = responseError('Internal server error', 500)
+      res.status(resp.statusCode).json(resp)
    }
 }

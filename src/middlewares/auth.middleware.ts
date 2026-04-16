@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { verifyAccessToken } from '../common/helpers/jwt.helper.js'
-import { errorResponse } from '../common/helpers/response.helper.js'
+import { responseError } from '../common/helpers/response.helper.js'
 
 export function verifyToken(req: Request, res: Response, next: NextFunction): void {
    let token = req.cookies?.access_token
@@ -13,7 +13,8 @@ export function verifyToken(req: Request, res: Response, next: NextFunction): vo
    }
 
    if (!token) {
-      errorResponse(res, 'Access token required', 401)
+      const resp = responseError('Access token required', 401)
+      res.status(resp.statusCode).json(resp)
       return
    }
 
@@ -22,9 +23,11 @@ export function verifyToken(req: Request, res: Response, next: NextFunction): vo
       next()
    } catch (err: any) {
       if (err.name === 'TokenExpiredError') {
-         errorResponse(res, 'Token expired', 401)
+         const resp = responseError('Token expired', 401)
+         res.status(resp.statusCode).json(resp)
       } else {
-         errorResponse(res, 'Invalid token', 401)
+         const resp = responseError('Invalid token', 401)
+         res.status(resp.statusCode).json(resp)
       }
    }
 }
