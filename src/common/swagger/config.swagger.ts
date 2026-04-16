@@ -2,7 +2,6 @@ import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import { Application } from 'express'
 
-// ─── Swagger Options ──────────────────────────────────────────────────────────
 
 const swaggerDefinition: swaggerJSDoc.OAS3Definition = {
    openapi: '3.0.0',
@@ -16,6 +15,10 @@ const swaggerDefinition: swaggerJSDoc.OAS3Definition = {
       },
    },
    servers: [
+      {
+         url: 'https://capstone-54-production.up.railway.app',
+         description: 'Production Server (Railway)',
+      },
       {
          url: `http://localhost:${process.env.PORT || 9090}`,
          description: 'Local Development Server',
@@ -53,8 +56,15 @@ const swaggerDefinition: swaggerJSDoc.OAS3Definition = {
 
 const swaggerOptions: swaggerJSDoc.Options = {
    definition: swaggerDefinition,
-   // Quét tất cả swagger doc files trong common/swagger
-   apis: ['./src/common/swagger/*.swagger.ts', './src/common/swagger/*.swagger.js'],
+   apis: [
+      // Quét file TS khi chạy dev (npm run dev)
+      './src/common/swagger/*.swagger.ts',
+      './src/routes/*.ts',
+
+      // Quét file JS khi chạy trên Railway (sau khi build xong nằm trong dist)
+      './dist/common/swagger/*.swagger.js',
+      './dist/routes/*.js'
+   ],
 }
 
 export const swaggerSpec = swaggerJSDoc(swaggerOptions)
