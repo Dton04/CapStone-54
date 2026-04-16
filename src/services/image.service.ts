@@ -102,7 +102,6 @@ export const imageService = {
     * Xóa ảnh (Chỉ người tạo mới được xóa)
     */
    async delete(dto: DeleteImageDto) {
-      // 1. Lấy thông tin ảnh
       const image = await prisma.image.findUnique({
          where: { id: dto.imageId },
       })
@@ -111,12 +110,11 @@ export const imageService = {
          throw new NotfoundException('Không tìm thấy ảnh')
       }
 
-      // 2. Kiểm tra quyền sở hữu
       if (image.user_id !== dto.userId) {
          throw new ForbiddenException('Bạn không có quyền xóa ảnh này')
       }
 
-      // 3. Xoá khỏi Cloudinary (Tuỳ chọn: tách public_id từ URL nếu cần, tạm thời xử lý đơn giản)
+      // Xoá khỏi Cloudinary (Tuỳ chọn: tách public_id từ URL nếu cần, tạm thời xử lý đơn giản)
       try {
          // Lấy public_id từ url: https://res.cloudinary.com/.../pinshare-images/filename.jpg
          const urlParts = image.url.split('/')
@@ -130,7 +128,6 @@ export const imageService = {
          console.warn('Lỗi khi xóa ảnh trên Cloudinary:', err)
       }
 
-      // 4. Xóa khỏi DB
       await prisma.image.delete({
          where: { id: dto.imageId },
       })
