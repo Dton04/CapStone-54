@@ -109,7 +109,10 @@
  * @swagger
  * /api/auth/login:
  *   post:
- *     summary: Đăng nhập – nhận JWT tokens
+ *     summary: Đăng nhập – (JWT được lưu trong HttpOnly Cookies)
+ *     description: >
+ *       Xác thực người dùng và trả về access token + refresh token thông qua HttpOnly cookies.
+ *       Client không cần lưu token trong localStorage.
  *     tags: [Auth]
  *     requestBody:
  *       required: true
